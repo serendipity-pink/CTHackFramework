@@ -142,18 +142,18 @@ bool Process::WriteBool(const DWORD& _dwAddr, const BOOL& _newData)
 
 void Process::SetTargetProcess(const std::wstring& _szProcessName)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
-	// ÈÕÖ¾
-	Util::Logger::LogDisc msg;
+    // æ—¥å¿—
+    Util::Logger::LogDisc msg;
 	msg.emPriority = Util::Logger::Priority::INFO;
 	msg.szFrom = __func__;
 	msg.szMsg = "Set target process name";
 	msg.szTarget = Util::WstringToString(this->szProcessName);
 	logger->Write(msg);
 
-	// È·±£ºó×ºÕıÈ·
+    // ç¡®ä¿åç¼€æ­£ç¡®
 	const std::wstring suffix = L".exe";
 	if (_szProcessName.find(suffix) == std::wstring::npos)
 		this->szProcessName = _szProcessName + suffix;
@@ -163,10 +163,10 @@ void Process::SetTargetProcess(const std::wstring& _szProcessName)
 
 void Process::GetProcessID(void)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
-	// ÈÕÖ¾
+    // æ—¥å¿—
 	Util::Logger::LogDisc msg;
 	msg.emPriority = Util::Logger::Priority::INFO;
 	msg.szFrom = __func__;
@@ -174,10 +174,10 @@ void Process::GetProcessID(void)
 	msg.szTarget = Util::WstringToString(this->szProcessName);
 	logger->Write(msg);
 
-	// ÖØÖÃ´íÎóĞÅÏ¢
+    // é‡ç½®é”™è¯¯ä¿¡æ¯
 	SetLastError(0);
 
-	// »ñÈ¡ÏµÍ³½ø³Ì¿ìÕÕ
+    // è·å–ç³»ç»Ÿè¿›ç¨‹å¿«ç…§
 	PROCESSENTRY32 processEntry = { sizeof(PROCESSENTRY32) };
 	HANDLE hProcessSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, NULL);
 	if (hProcessSnapshot == INVALID_HANDLE_VALUE)
@@ -191,7 +191,7 @@ void Process::GetProcessID(void)
 		return;
 	}
 
-	// ±éÀú¿ìÕÕÖ±µ½ÕÒµ½Ä¿±ê½ø³Ì
+    // éå†å¿«ç…§ç›´åˆ°æ‰¾åˆ°ç›®æ ‡è¿›ç¨‹
 	if (Process32First(hProcessSnapshot, &processEntry))
 	{
 		do
@@ -199,7 +199,7 @@ void Process::GetProcessID(void)
 			if (!wcscmp(processEntry.szExeFile, this->szProcessName.c_str()))
 			{
 				CloseHandle(hProcessSnapshot);
-				// ÈÕÖ¾
+                // æ—¥å¿—
 				Util::Logger::LogDisc msg;
 				msg.emPriority = Util::Logger::Priority::INFO;
 				msg.szFrom = __func__;
@@ -212,11 +212,11 @@ void Process::GetProcessID(void)
 			}
 		} while (Process32Next(hProcessSnapshot, &processEntry));
 	}
-	// ´¦Àí´íÎóĞÅÏ¢
+    // å¤„ç†é”™è¯¯ä¿¡æ¯
 	int err = GetLastError();
 	if (err != 0)
 	{
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::FATAL;
 		msg.szFrom = __func__;
@@ -231,13 +231,13 @@ void Process::GetProcessID(void)
 
 void Process::OpenProcessHandle(void)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
 	HANDLE hTemp = OpenProcess(PROCESS_ALL_ACCESS, FALSE, this->dwProcessID);
 	if (hTemp == INVALID_HANDLE_VALUE)
 	{
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::FATAL;
 		msg.szFrom = __func__;
@@ -252,12 +252,12 @@ void Process::OpenProcessHandle(void)
 
 void Process::CloseProcessHandle(void)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
 	if (this->hProcessHandle == INVALID_HANDLE_VALUE)
 	{
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::FATAL;
 		msg.szFrom = __func__;
@@ -272,13 +272,13 @@ void Process::CloseProcessHandle(void)
 
 void Process::GetModuleBaseAddress(void)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
-	// ÖØÖÃ´íÎóĞÅÏ¢
+    // é‡ç½®é”™è¯¯ä¿¡æ¯
 	SetLastError(0);
 
-	// ÈÕÖ¾
+    // æ—¥å¿—
 	Util::Logger::LogDisc msg;
 	msg.emPriority = Util::Logger::Priority::INFO;
 	msg.szFrom = __func__;
@@ -286,12 +286,12 @@ void Process::GetModuleBaseAddress(void)
 	msg.szTarget = Util::WstringToString(this->szProcessName);
 	logger->Write(msg);
 
-	// »ñÈ¡ÏµÍ³Ä£¿é¿ìÕÕ
+    // è·å–ç³»ç»Ÿæ¨¡å—å¿«ç…§
 	MODULEENTRY32 moduleEntry = { sizeof(MODULEENTRY32) };
 	HANDLE hThreadSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, this->dwProcessID);
 	if (hThreadSnapShot == INVALID_HANDLE_VALUE)
 	{
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::FATAL;
 		msg.szFrom = __func__;
@@ -301,12 +301,12 @@ void Process::GetModuleBaseAddress(void)
 		return;
 	}
 
-	// ±éÀú¿ìÕÕÖ±µ½ÕÒµ½Ä¿±êÄ£¿é
+    // éå†å¿«ç…§ç›´åˆ°æ‰¾åˆ°ç›®æ ‡æ¨¡å—
 	if (Module32First(hThreadSnapShot, &moduleEntry))
 	{
 		do
 		{
-			// ÈÕÖ¾
+            // æ—¥å¿—
 			Util::Logger::LogDisc msg;
 			msg.emPriority = Util::Logger::Priority::DEBUG;
 			msg.szFrom = __func__;
@@ -323,11 +323,11 @@ void Process::GetModuleBaseAddress(void)
 	}
 
 	CloseHandle(hThreadSnapShot);
-	// ´¦Àí´íÎóĞÅÏ¢
+    // å¤„ç†é”™è¯¯ä¿¡æ¯
 	int err = GetLastError();
 	if (err != 0)
 	{
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::FATAL;
 		msg.szFrom = __func__;
@@ -341,23 +341,23 @@ void Process::GetModuleBaseAddress(void)
 
 BOOL Process::SetPrivilege(HANDLE _hToken, LPCTSTR _szPrivilege, BOOL _enablePrivilege)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
 	TOKEN_PRIVILEGES newTokenPrivileges;
 	LUID luid;
 
-	// ÖØÖÃ´íÎóĞÅÏ¢
+    // é‡ç½®é”™è¯¯ä¿¡æ¯
 	SetLastError(0);
 
-	// ²éÑ¯LUIDÈ¨ÏŞÖµ
+    // æŸ¥è¯¢LUIDæƒé™å€¼
 	if (!LookupPrivilegeValue(NULL, _szPrivilege, &luid))
 	{
-		// ´¦Àí´íÎóĞÅÏ¢
+        // å¤„ç†é”™è¯¯ä¿¡æ¯
 		int err = GetLastError();
 		if (err != 0)
 		{
-			// ÈÕÖ¾
+            // æ—¥å¿—
 			Util::Logger::LogDisc msg;
 			msg.emPriority = Util::Logger::Priority::WARNING;
 			msg.szFrom = __func__;
@@ -368,19 +368,19 @@ BOOL Process::SetPrivilege(HANDLE _hToken, LPCTSTR _szPrivilege, BOOL _enablePri
 		return FALSE;
 	}
 
-	// ´´½¨ĞÂµÄtoken
+    // åˆ›å»ºæ–°çš„token
 	newTokenPrivileges.PrivilegeCount = 1;
 	newTokenPrivileges.Privileges[0].Luid = luid;
 	newTokenPrivileges.Privileges[0].Attributes = _enablePrivilege ? SE_PRIVILEGE_ENABLED : 0;
 
-	// Ê¹ÓÃĞÂµÄtokenµ÷ÕûÈ¨ÏŞ
+    // ä½¿ç”¨æ–°çš„tokenè°ƒæ•´æƒé™
 	if (!AdjustTokenPrivileges(_hToken, FALSE, &newTokenPrivileges, sizeof(TOKEN_PRIVILEGES), (PTOKEN_PRIVILEGES)NULL, (PDWORD)NULL))
 	{
-		// ´¦Àí´íÎóĞÅÏ¢
+        // å¤„ç†é”™è¯¯ä¿¡æ¯
 		int err = GetLastError();
 		if (err != 0)
 		{
-			// ÈÕÖ¾
+            // æ—¥å¿—
 			Util::Logger::LogDisc msg;
 			msg.emPriority = Util::Logger::Priority::WARNING;
 			msg.szFrom = __func__;
@@ -391,10 +391,10 @@ BOOL Process::SetPrivilege(HANDLE _hToken, LPCTSTR _szPrivilege, BOOL _enablePri
 		return FALSE;
 	}
 
-	// ´¦Àí´íÎóĞÅÏ¢
+    // å¤„ç†é”™è¯¯ä¿¡æ¯
 	int err = GetLastError();
 	if (err == ERROR_NOT_ALL_ASSIGNED) {
-		// ÈÕÖ¾
+        // æ—¥å¿—
 		Util::Logger::LogDisc msg;
 		msg.emPriority = Util::Logger::Priority::WARNING;
 		msg.szFrom = __func__;
@@ -409,24 +409,24 @@ BOOL Process::SetPrivilege(HANDLE _hToken, LPCTSTR _szPrivilege, BOOL _enablePri
 
 BOOL Process::GetDebugPrivileges(void)
 {
-	// È¡µÃLogger
+    // å–å¾—Logger
 	Util::Logger* logger = Util::Logger::GetInstance();
 
-	// ÈÕÖ¾
+    // æ—¥å¿—
 	Util::Logger::LogDisc msg;
 	msg.emPriority = Util::Logger::Priority::INFO;
 	msg.szFrom = __func__;
 	msg.szMsg = "Trying to get debug privileges...";
 	logger->Write(msg);
 
-	// ÖØÖÃ´íÎóĞÅÏ¢
+    // é‡ç½®é”™è¯¯ä¿¡æ¯
 	SetLastError(0);
 
-	// »ñÈ¡µ±Ç°½ø³ÌµÄÈ¨ÏŞtoken
+    // è·å–å½“å‰è¿›ç¨‹çš„æƒé™token
 	HANDLE hToken = NULL;
 	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &hToken))
 	{
-		// ´¦Àí´íÎóĞÅÏ¢
+        // å¤„ç†é”™è¯¯ä¿¡æ¯
 		int err = GetLastError();
 		if (err != 0)
 		{
@@ -448,10 +448,10 @@ BOOL Process::GetDebugPrivileges(void)
 		logger->Write(msg);
 	}
 
-	// ¸³Óèµ±Ç°½ø³ÌdebugÈ¨ÏŞ
+    // èµ‹äºˆå½“å‰è¿›ç¨‹debugæƒé™
 	if (!SetPrivilege(hToken, SE_DEBUG_NAME, TRUE))
 	{
-		// ´¦Àí´íÎóĞÅÏ¢
+        // å¤„ç†é”™è¯¯ä¿¡æ¯
 		int err = GetLastError();
 		if (err != 0)
 		{

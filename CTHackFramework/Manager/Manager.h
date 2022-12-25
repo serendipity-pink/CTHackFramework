@@ -10,12 +10,12 @@
 class Manager
 {
 public:
-	// ¹¹Ôìº¯Êı
+    // æ„é€ å‡½æ•°
 	Manager();
-	// ½ûÖ¹¸´ÖÆ³õÊ¼»¯Óë¸³Öµ²Ù×÷
+    // ç¦æ­¢å¤åˆ¶åˆå§‹åŒ–ä¸èµ‹å€¼æ“ä½œ
 	Manager(const Manager&) = delete;
 	Manager& operator = (const Manager&) = delete;
-	// Îö¹¹º¯Êı
+    // ææ„å‡½æ•°
 	~Manager();
 
 public:

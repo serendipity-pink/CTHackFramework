@@ -1,20 +1,20 @@
 #include "GameData.h"
 
-// µ±Ç°¿ª·¢°æ±¾
+// å½“å‰å¼€å‘ç‰ˆæœ¬
 const std::wstring devVersion;
 
-// Ä¿±ê½ø³ÌID
+// ç›®æ ‡è¿›ç¨‹ID
 DWORD targetPID;
-// Ä¿±ê½ø³ÌÃû³Æ
+// ç›®æ ‡è¿›ç¨‹åç§°
 std::wstring targetProcName;
-// Ä¿±ê´°¿ÚÃû³Æ
+// ç›®æ ‡çª—å£å¥æŸ„
 std::wstring targetWndName;
 
-// Ä¿±ê´°¿Ú¾ä±ú
+// ç›®æ ‡çª—å£å¥æŸ„
 HWND hTargetWnd;
-// Ä¿±ê´°¿ÚRect
+// ç›®æ ‡çª—å£Rect
 RECT targetRect;
-// Ä¿±ê´°¿Ú¿í¶È
+// ç›®æ ‡çª—å£å®½åº¦
 unsigned int targetWndWidth;
-// Ä¿±ê´°¿Ú³¤¶È
+// ç›®æ ‡çª—å£é•¿åº¦
 unsigned int targetWndHeight;
